@@ -1,8 +1,9 @@
 import { useReducer, useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/auth-context";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
-import classes from "./AuthForm.module.css";
+import styles from "./AuthForm.module.css";
 
 const initialFormState = {
   emailValue: "",
@@ -73,13 +74,13 @@ const formReducer = (state, action) => {
 const AuthForm = () => {
   const [formState, dispatchForm] = useReducer(formReducer, initialFormState);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const authCtx = useContext(AuthContext);
   const router = useRouter();
 
   const emailIsValid = formState.emailValue.includes("@");
-  const passwordIsValid = formState.passwordValue.trim().length >= 6;
+  const passwordIsValid = formState.passwordValue.trim().length >= 8;
 
   const emailHasError = !emailIsValid && formState.emailIsTouched;
   const passwordHasError = !passwordIsValid && formState.passwordIsTouched;
@@ -160,10 +161,10 @@ const AuthForm = () => {
       });
   };
 
-  let buttonText = "Who you is?";
+  let buttonText = "Who goes there?";
 
   if (passwordHasError) {
-    buttonText = "Passwords must be 6 characters long.";
+    buttonText = "Passwords must be 8 characters long.";
   }
 
   if (emailHasError) {
@@ -174,15 +175,28 @@ const AuthForm = () => {
     buttonText = "Login";
   }
 
+  // console.log(formState.emailValue)
+  // console.log(formState.emailIsTouched)
+  // console.log(formState.passwordValue)
+  // console.log(formState.passwordIsTouched)
+  // console.log(formState.formIsValid)
+
   return (
-    <>
+    <section className={styles.auth}>
+      <Image
+        className={styles.snow}
+        src="/snow.gif"
+        alt="tv-snow"
+        layout={"fill"}
+      />
       {!isLoading && (
-        <section className={classes.auth}>
-          <form onSubmit={submitHandler}>
+        <>
+          <div className={styles.halt}>
+            <p>Halt. &#9995;</p>
+          </div>
+          <form className={styles.form} onSubmit={submitHandler}>
             <div
-              className={`${classes.control} ${
-                emailHasError && classes.invalid
-              }`}
+              className={`${styles.control} ${emailHasError && styles.invalid}`}
             >
               <input
                 placeholder="email"
@@ -195,8 +209,8 @@ const AuthForm = () => {
               />
             </div>
             <div
-              className={`${classes.control} ${
-                passwordHasError && classes.invalid
+              className={`${styles.control} ${
+                passwordHasError && styles.invalid
               }`}
             >
               <input
@@ -210,149 +224,31 @@ const AuthForm = () => {
               />
             </div>
             <div
-              className={`${classes.actions} ${
-                !formState.formIsValid && classes.invalid
+              className={`${styles.actions} ${
+                !formState.formIsValid && styles.invalid
               }`}
             >
-              <button type="submit">{buttonText}</button>
-              {isLoading && <p>Loading...</p>}
-              {/* ADD LOADING SPINNER */}
+              <button
+                className={
+                  emailHasError || passwordHasError ? styles.error : ""
+                }
+                type="submit"
+              >
+                {buttonText}
+              </button>
             </div>
           </form>
-        </section>
+        </>
       )}
       {isLoading && (
-        <section className={classes.loading}>
-          <svg
-            width="58"
-            height="58"
-            viewBox="0 0 58 58"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g fill="none" fillRule="evenodd">
-              <g transform="translate(2 1)" stroke="#FFF" strokeWidth="1.5">
-                <circle
-                  cx="42.601"
-                  cy="11.462"
-                  r="5"
-                  fillOpacity="1"
-                  fill="#fff"
-                >
-                  <animate
-                    attributeName="fill-opacity"
-                    begin="0s"
-                    dur="1.3s"
-                    values="1;0;0;0;0;0;0;0"
-                    calcMode="linear"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle
-                  cx="49.063"
-                  cy="27.063"
-                  r="5"
-                  fillOpacity="0"
-                  fill="#fff"
-                >
-                  <animate
-                    attributeName="fill-opacity"
-                    begin="0s"
-                    dur="1.3s"
-                    values="0;1;0;0;0;0;0;0"
-                    calcMode="linear"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle
-                  cx="42.601"
-                  cy="42.663"
-                  r="5"
-                  fillOpacity="0"
-                  fill="#fff"
-                >
-                  <animate
-                    attributeName="fill-opacity"
-                    begin="0s"
-                    dur="1.3s"
-                    values="0;0;1;0;0;0;0;0"
-                    calcMode="linear"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle cx="27" cy="49.125" r="5" fillOpacity="0" fill="#fff">
-                  <animate
-                    attributeName="fill-opacity"
-                    begin="0s"
-                    dur="1.3s"
-                    values="0;0;0;1;0;0;0;0"
-                    calcMode="linear"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle
-                  cx="11.399"
-                  cy="42.663"
-                  r="5"
-                  fillOpacity="0"
-                  fill="#fff"
-                >
-                  <animate
-                    attributeName="fill-opacity"
-                    begin="0s"
-                    dur="1.3s"
-                    values="0;0;0;0;1;0;0;0"
-                    calcMode="linear"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle
-                  cx="4.938"
-                  cy="27.063"
-                  r="5"
-                  fillOpacity="0"
-                  fill="#fff"
-                >
-                  <animate
-                    attributeName="fill-opacity"
-                    begin="0s"
-                    dur="1.3s"
-                    values="0;0;0;0;0;1;0;0"
-                    calcMode="linear"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle
-                  cx="11.399"
-                  cy="11.462"
-                  r="5"
-                  fillOpacity="0"
-                  fill="#fff"
-                >
-                  <animate
-                    attributeName="fill-opacity"
-                    begin="0s"
-                    dur="1.3s"
-                    values="0;0;0;0;0;0;1;0"
-                    calcMode="linear"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle cx="27" cy="5" r="5" fillOpacity="0" fill="#fff">
-                  <animate
-                    attributeName="fill-opacity"
-                    begin="0s"
-                    dur="1.3s"
-                    values="0;0;0;0;0;0;0;1"
-                    calcMode="linear"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-              </g>
-            </g>
-          </svg>
-        </section>
+        <Image
+          src="/public/loading-spinner.svg"
+          alt="loading"
+          width={80}
+          height={80}
+        />
       )}
-    </>
+    </section>
   );
 };
 

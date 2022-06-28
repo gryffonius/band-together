@@ -1,10 +1,14 @@
-import MainNavigation from './MainNavigation'
+import LeftNavigation from '../AuthedNav/LeftNav/LeftNavigation'
+import RightNavigation from '../AuthedNav/RightNav/RightNavigation'
 
-const Layout = () => {
+// LEFT AND RIGHT NAV BARS SEEN ONLY IF SIGNED IN
+
+const Layout = (props) => {
   return (
     <>
-      <MainNavigation />
+      <LeftNavigation />
       <main>{props.children}</main>
+      <RightNavigation />
     </>
   );
 };
