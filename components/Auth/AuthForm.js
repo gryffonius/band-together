@@ -1,7 +1,7 @@
-import { useReducer, useContext, useState, useEffect } from "react";
-import AuthContext from "../../context/auth-context";
-import { useRouter } from "next/router";
-import Image from "next/image";
+import { useReducer, useEffect } from "react";
+
+// import AuthContext from "../../context/auth-context";
+// import { useRouter } from "next/router";
 
 import styles from "./AuthForm.module.css";
 
@@ -71,13 +71,11 @@ const formReducer = (state, action) => {
   return initialFormState;
 };
 
-const AuthForm = () => {
+const AuthForm = (props) => {
   const [formState, dispatchForm] = useReducer(formReducer, initialFormState);
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const authCtx = useContext(AuthContext);
-  const router = useRouter();
+  // const authCtx = useContext(AuthContext);
+  // const router = useRouter();
 
   const emailIsValid = formState.emailValue.includes("@");
   const passwordIsValid = formState.passwordValue.trim().length >= 8;
@@ -114,53 +112,6 @@ const AuthForm = () => {
     dispatchForm({ type: "PASSWORD_BLUR" });
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    const enteredEmail = formState.emailValue;
-    const enteredPassword = formState.passwordValue;
-
-    // OPTIONAL VALIDATION
-
-    setIsLoading(true);
-
-    const url = ""; // SIGN IN ENDPOINT URL
-
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        email: enteredEmail,
-        password: enteredPassword,
-        returnSecureToken: true,
-      }),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => {
-        setIsLoading(false);
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            let errorMessage = "Authentication failed!";
-            if (data && data.error && data.error.message) {
-              errorMessage = data.error.message;
-            }
-            throw new Error(errorMessage);
-          });
-        }
-      })
-      .then((data) => {
-        const expirationTime = new Date(
-          new Date().getTime() + +data.expiresIn * 1000
-        );
-        authCtx.login(data.idToken, expirationTime.toISOString());
-        router.replace("/");
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
-  };
-
   let buttonText = "Who goes there?";
 
   if (passwordHasError) {
@@ -175,79 +126,49 @@ const AuthForm = () => {
     buttonText = "Login";
   }
 
-  // console.log(formState.emailValue)
-  // console.log(formState.emailIsTouched)
-  // console.log(formState.passwordValue)
-  // console.log(formState.passwordIsTouched)
-  // console.log(formState.formIsValid)
-
   return (
     <section className={styles.auth}>
-      <Image
-        className={styles.snow}
-        src="/snow.gif"
-        alt="tv-snow"
-        layout={"fill"}
-      />
-      {!isLoading && (
-        <>
-          <div className={styles.halt}>
-            <p>Halt. &#9995;</p>
-          </div>
-          <form className={styles.form} onSubmit={submitHandler}>
-            <div
-              className={`${styles.control} ${emailHasError && styles.invalid}`}
-            >
-              <input
-                placeholder="email"
-                value={formState.emailValue}
-                type="email"
-                id="email"
-                onChange={emailChangeHandler}
-                onBlur={validateEmailHandler}
-                required
-              />
-            </div>
-            <div
-              className={`${styles.control} ${
-                passwordHasError && styles.invalid
-              }`}
-            >
-              <input
-                placeholder="password"
-                value={formState.passwordValue}
-                type="password"
-                id="password"
-                onChange={passwordChangeHandler}
-                onBlur={validatePasswordHandler}
-                required
-              />
-            </div>
-            <div
-              className={`${styles.actions} ${
-                !formState.formIsValid && styles.invalid
-              }`}
-            >
-              <button
-                className={
-                  emailHasError || passwordHasError ? styles.error : ""
-                }
-                type="submit"
-              >
-                {buttonText}
-              </button>
-            </div>
-          </form>
-        </>
-      )}
-      {isLoading && (
-        <Image
-          src="/public/loading-spinner.svg"
-          alt="loading"
-          width={80}
-          height={80}
-        />
-      )}
+      <div className={styles.halt}>
+        <p>Halt. &#9995;</p>
+      </div>
+      <form className={styles.form} onSubmit={props.onSubmit}>
+        <div className={`${styles.control} ${emailHasError && styles.invalid}`}>
+          <input
+            placeholder="email"
+            value={formState.emailValue}
+            type="email"
+            id="email"
+            onChange={emailChangeHandler}
+            onBlur={validateEmailHandler}
+            required
+          />
+        </div>
+        <div
+          className={`${styles.control} ${passwordHasError && styles.invalid}`}
+        >
+          <input
+            placeholder="password"
+            value={formState.passwordValue}
+            type="password"
+            id="password"
+            onChange={passwordChangeHandler}
+            onBlur={validatePasswordHandler}
+            required
+          />
+        </div>
+        <div
+          className={`${styles.actions} ${
+            !formState.formIsValid && styles.invalid
+          }`}
+        >
+          <button
+            className={emailHasError || passwordHasError ? styles.error : ""}
+            type="submit"
+          >
+            {buttonText}
+          </button>
+        </div>
+      </form>
     </section>
   );
 };

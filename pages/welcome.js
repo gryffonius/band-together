@@ -1,6 +1,6 @@
 import Head from "next/head";
 import styles from "../styles/Welcome.module.css";
-import AuthForm from "../components/Auth/AuthForm";
+import AuthContainer from "../components/Auth/AuthForm";
 
 const Welcome = () => {
   return (
@@ -17,7 +17,7 @@ const Welcome = () => {
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to BandTogether.io!</h1>
         
-        <AuthForm />
+        <AuthContainer />
 
         <p className={styles.description}>
           New here? Choose your path. &#128128;

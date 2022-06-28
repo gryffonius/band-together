@@ -4,20 +4,9 @@
   width: 95%;
   max-width: 20rem;
   height: 15rem;
-  border-radius: 10px;
-  border: 2px solid black;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  padding: 1rem;
   text-align: center;
   color: white;
-  overflow: hidden;
   z-index: 1;
-}
-
-.snow {
-  position: absolute;
-  z-index: 0;
-  pointer-events: none;
 }
 
 .loading {
