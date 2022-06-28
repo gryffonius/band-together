@@ -1,0 +1,84 @@
+.auth {
+  margin: 1rem auto ;
+  width: 95%;
+  max-width: 25rem;
+  border-radius: 6px;
+  border: 2px solid black;
+  background-color: #090345;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  text-align: center;
+  color: white;
+  background-image: url('../../images/snow.gif')
+}
+
+.loading {
+  margin: 1rem auto ;
+  width: 95%;
+  max-width: 25rem;
+  border-radius: 6px;
+  border: 2px solid black;
+  background-color: #090345;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  text-align: center;
+  color: white;
+  height: 10.5rem;
+  background-image: url('../../images/snow.gif');
+}
+
+.loading svg {
+  margin: 0;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.control {
+  margin-bottom: 0.5rem;
+}
+
+.control input {
+  font: inherit;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 4px;
+  border: 2px solid #000000;
+  width: 100%;
+  text-align: left;
+  padding: 0.25rem;
+}
+
+.control.invalid input {
+  border: 2px solid #ff0000;
+}
+
+.actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.actions button {
+  cursor: pointer;
+  font: inherit;
+  color: rgb(0, 0, 0);
+  background-color: #00ff33;
+  border: 2px solid black;
+  border-radius: 4px;
+  padding: 0.5rem 2rem;
+  transition: border-radius 200ms ease-in-out;
+}
+
+.actions button:hover {
+  border-radius: 20px;
+  transition: border-radius 200ms ease-in-out;
+}
+
+.actions.invalid button {
+  background-color: gray;
+  color: lightgray;
+  pointer-events: none;
+  cursor: pointer
+}
