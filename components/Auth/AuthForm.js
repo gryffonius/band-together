@@ -1,4 +1,6 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useState, useEffect } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 // import AuthContext from "../../context/auth-context";
 // import { useRouter } from "next/router";
@@ -71,11 +73,12 @@ const formReducer = (state, action) => {
   return initialFormState;
 };
 
-const AuthForm = (props) => {
+const AuthForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [formState, dispatchForm] = useReducer(formReducer, initialFormState);
 
   // const authCtx = useContext(AuthContext);
-  // const router = useRouter();
+  const router = useRouter();
 
   const emailIsValid = formState.emailValue.includes("@");
   const passwordIsValid = formState.passwordValue.trim().length >= 8;
@@ -126,49 +129,125 @@ const AuthForm = (props) => {
     buttonText = "Login";
   }
 
+    // TEMPORARY SUBMIT HANDLER
+  // WAITS 2 SECONDS AND NAVIGATES TO THE CORRECT PAGE
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    setTimeout(() => router.replace('/'), 3000) 
+    // const enteredEmail = formState.emailValue;
+    // const enteredPassword = formState.passwordValue;
+
+    // const url = ""; // SIGN IN ENDPOINT URL
+
+    // fetch(url, {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     email: enteredEmail,
+    //     password: enteredPassword,
+    //     returnSecureToken: true,
+    //   }),
+    //   headers: { "Content-Type": "application/json" },
+    // })
+    //   .then((res) => {
+    //     setIsLoading(false);
+    //     if (res.ok) {
+    //       return res.json();
+    //     } else {
+    //       return res.json().then((data) => {
+    //         let errorMessage = "Authentication failed!";
+    //         if (data && data.error && data.error.message) {
+    //           errorMessage = data.error.message;
+    //         }
+    //         throw new Error(errorMessage);
+    //       });
+    //     }
+    //   })
+    //   .then((data) => {
+    //     const expirationTime = new Date(
+    //       new Date().getTime() + +data.expiresIn * 1000
+    //     );
+    //     authCtx.login(data.idToken, expirationTime.toISOString());
+    //     router.replace("/");
+    //   })
+    //   .catch((err) => {
+    //     alert(err.message);
+    //   });
+  };
+
   return (
-    <section className={styles.auth}>
-      <div className={styles.halt}>
-        <p>Halt. &#9995;</p>
-      </div>
-      <form className={styles.form} onSubmit={props.onSubmit}>
-        <div className={`${styles.control} ${emailHasError && styles.invalid}`}>
-          <input
-            placeholder="email"
-            value={formState.emailValue}
-            type="email"
-            id="email"
-            onChange={emailChangeHandler}
-            onBlur={validateEmailHandler}
-            required
+    <section className={`${styles.auth} ${isLoading && styles.background}`}>
+      {isLoading && (
+        <>
+          <Image
+            className={styles.horse}
+            src="/horse-loop.gif"
+            alt="horse gallopping"
+            height={300}
+            width={400}
           />
-        </div>
-        <div
-          className={`${styles.control} ${passwordHasError && styles.invalid}`}
-        >
-          <input
-            placeholder="password"
-            value={formState.passwordValue}
-            type="password"
-            id="password"
-            onChange={passwordChangeHandler}
-            onBlur={validatePasswordHandler}
-            required
+        </>
+      )}
+      {!isLoading && (
+        <>
+          <Image
+            className={styles.snow}
+            src="/snow.gif"
+            alt="tv-snow"
+            layout={"fill"}
           />
-        </div>
-        <div
-          className={`${styles.actions} ${
-            !formState.formIsValid && styles.invalid
-          }`}
-        >
-          <button
-            className={emailHasError || passwordHasError ? styles.error : ""}
-            type="submit"
-          >
-            {buttonText}
-          </button>
-        </div>
-      </form>
+          <div className={styles.halt}>
+            <p>Halt. &#9995;</p>
+          </div>
+          <form className={styles.form} onSubmit={submitHandler}>
+            <div
+              className={`${styles.control} ${emailHasError && styles.invalid}`}
+            >
+              <input
+                placeholder="email"
+                value={formState.emailValue}
+                type="email"
+                id="email"
+                onChange={emailChangeHandler}
+                onBlur={validateEmailHandler}
+                required
+              />
+            </div>
+            <div
+              className={`${styles.control} ${
+                passwordHasError && styles.invalid
+              }`}
+            >
+              <input
+                placeholder="password"
+                value={formState.passwordValue}
+                type="password"
+                id="password"
+                onChange={passwordChangeHandler}
+                onBlur={validatePasswordHandler}
+                required
+              />
+            </div>
+            <div
+              className={`${styles.actions} ${
+                !formState.formIsValid && styles.invalid
+              }`}
+            >
+              <button
+                className={
+                  emailHasError || passwordHasError ? styles.error : ""
+                }
+                type="submit"
+              >
+                {buttonText}
+              </button>
+            </div>
+          </form>
+        </>
+      )}
     </section>
   );
 };

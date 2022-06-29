@@ -1,0 +1,80 @@
+.container {
+  width: 400px;
+  height: 300px;
+  display: flex;
+  flex: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  width: 100%;
+  height: 100%;
+  position: static;
+  z-index: 1;
+}
+
+.control {
+  margin-bottom: 0.5rem;
+}
+
+.control input {
+  font: inherit;
+  font-size: large;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 4px;
+  border: 2px solid #000000;
+  width: 100%;
+  text-align: left;
+  padding: 0.25rem 0.25rem 0 0.25rem;
+}
+
+.control p {
+  color: red;
+  padding: 0;
+  margin: 0.25rem 0 2rem;
+}
+
+.control.invalid input {
+  border: 2px solid #ff0000;
+}
+
+.actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.actions button {
+  cursor: pointer;
+  font: inherit;
+  color: rgb(0, 0, 0);
+  background-color: #00ff33;
+  border: 2px solid black;
+  border-radius: 4px;
+  padding: 0.5rem 2rem;
+  transition: border-radius 200ms ease-in-out;
+}
+
+.actions button:hover {
+  border-radius: 20px;
+  transition: border-radius 200ms ease-in-out;
+}
+
+.actions.invalid button {
+  background-color: gray;
+  color: rgb(255, 255, 255);
+  pointer-events: none;
+  cursor: pointer
+}
+
+.actions.invalid .error {
+  background-color: rgb(255, 255, 255);
+  color: rgb(255, 0, 0);
+  pointer-events: none;
+  cursor: pointer;
+  border: 2px solid rgb(255, 0, 0);
+}
